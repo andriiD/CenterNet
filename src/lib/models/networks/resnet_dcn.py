@@ -3,6 +3,8 @@
 # Licensed under the MIT License.
 # Written by Bin Xiao (Bin.Xiao@microsoft.com)
 # Modified by Dequan Wang and Xingyi Zhou
+#
+# Doesn't work due to https://github.com/CharlesShang/DCNv2/issues/27
 # ------------------------------------------------------------------------------
 
 from __future__ import absolute_import
