@@ -7,10 +7,10 @@ import torch
 import torch.nn as nn
 import os
 
-from .networks.msra_torchvision import get_pose_net as get_torchvision_msra
-from .networks.dlav0 import get_pose_net as get_dlav0
-from .networks.pose_dla_dcn import get_pose_net as get_dla_dcn
-from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
+from .networks.detector_msra_torchvision import get_pose_net as get_torchvision_msra
+# from .networks.dlav0 import get_pose_net as get_dlav0
+# from .networks.pose_dla_dcn import get_pose_net as get_dla_dcn
+# from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
 
 _model_factory = {
     'detector': get_torchvision_msra,  # Object detector with default Resnet with deconv
@@ -19,8 +19,9 @@ _model_factory = {
 
 
 def create_model(arch, heads, head_conv):
-    arch, backbone = arch.split("_")
-    get_model = _model_factory[arch]
+    model_type = arch.split("_")[0]
+    backbone = arch[len(model_type) + 1:]
+    get_model = _model_factory[model_type]
 
     model = get_model(backbone, heads=heads, head_conv=head_conv)
     return model

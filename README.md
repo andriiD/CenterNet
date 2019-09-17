@@ -1,4 +1,5 @@
-# Objects as Points
+# Objects as Points.
+# Version for the Pytorch 1.2 without deformable convolutions with the support of torchvision.models as backbones
 Object detection, 3D detection, and pose estimation using center point detection:
 ![](readme/fig2.png)
 > [**Objects as Points**](http://arxiv.org/abs/1904.07850),            
@@ -30,8 +31,6 @@ Detection identifies objects as axis-aligned boxes in an image. Most successful 
 
 | Backbone     |  AP / FPS | Flip AP / FPS|  Multi-scale AP / FPS |
 |--------------|-----------|--------------|-----------------------|
-|Hourglass-104 | 40.3 / 14 | 42.2 / 7.8   | 45.1 / 1.4            |
-|DLA-34        | 37.4 / 52 | 39.2 / 28    | 41.7 / 4              |
 |ResNet-101    | 34.6 / 45 | 36.2 / 25    | 39.3 / 4              |
 |ResNet-18     | 28.1 / 142| 30.0 / 71    | 33.2 / 12             |
 
@@ -41,12 +40,6 @@ Detection identifies objects as axis-aligned boxes in an image. Most successful 
 |--------------|-----------|--------------|
 |Hourglass-104 | 64.0      |    6.6       |
 |DLA-34        | 58.9      |    23        |
-
-### 3D bounding box detection on KITTI validation
-
-|Backbone|FPS|AP-E|AP-M|AP-H|AOS-E|AOS-M|AOS-H|BEV-E|BEV-M|BEV-H| 
-|--------|---|----|----|----|-----|-----|-----|-----|-----|-----|
-|DLA-34  |32 |96.9|87.8|79.2|93.9 |84.3 |75.7 |34.0 |30.5 |26.8 |
 
 
 All models and details are available in our [Model zoo](readme/MODEL_ZOO.md).

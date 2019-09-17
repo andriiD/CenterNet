@@ -36,9 +36,17 @@ class PoseResNet(nn.Module):
         # Set up the detector's backbone from torchvision.models
         base_net = getattr(models, backbone)(pretrained=True)
         print(base_net)
-        self.inplanes = base_net.fc.in_features  # Size of the features before heads
-        base_net = list(base_net.children())
-        self.encoder = nn.Sequential(*base_net[:-2])  # Exclude original fully connected and pooling layers
+        if backbone.startswith("resnet"):
+            self.inplanes = base_net.fc.in_features  # Size of the features before heads
+            base_net = list(base_net.children())
+            self.encoder = nn.Sequential(*base_net[:-2])  # Exclude original fully connected and pooling layers
+        elif backbone.startswith("mobilenet"):
+            self.inplanes = base_net.classifier[1].in_features  # Size of the features before heads
+            base_net = list(base_net.children())
+            self.encoder = nn.Sequential(*base_net[:-1])  # Exclude last sequential
+        else:
+            raise ValueError("wrong backbone name prided", backbone)
+
         #
         # print(self.encoder)
         self.pooling = nn.AdaptiveAvgPool2d((1, 1))
@@ -112,15 +120,9 @@ class PoseResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        # print("\nStart", x.size())
-        x = self.encoder(x)
-        # print("\n2:", x.size())
-        # print(x.size())
-        # x = self.pooling(x)
-        # print("\n3 After pooling:", x.size())
-        # print(x.size())
+        x = self.encoder(x)  # batch_size x self.inplanes x 7 x 7
 
-        x = self.deconv_layers(x)
+        x = self.deconv_layers(x)  # batch_size x 256 x 128 x 128
         # print("\nAfter deconv:", x.size())
         ret = {}
         for head in self.heads:

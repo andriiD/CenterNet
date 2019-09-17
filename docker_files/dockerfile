@@ -1,0 +1,39 @@
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+         build-essential \
+         cmake \
+         git \
+         curl \
+         vim \
+         ca-certificates \
+         libjpeg-dev \
+         libpng-dev &&\
+     rm -rf /var/lib/apt/lists/*
+
+
+RUN apt-get update \
+  && apt-get install -y python3-pip python3-dev \
+  && cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 install --upgrade pip
+
+RUN mkdir for_install
+RUN pip install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
+RUN pip3 install torch
+RUN pip3 install torchvision
+
+RUN pip install jupyter pandas imageio ipython matplotlib Pillow scikit-image scikit-learn scipy  tqdm
+
+RUN apt install -y gedit nano
+RUN pip install Cython
+
+ENV TZ=Europe/Kiev
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt install -y python-tk
+RUN pip install pycocotools logger
+
+RUN apt-get install -y libsm6 libxext6 libxrender-dev
+RUN pip install opencv-python numba progress
+
